@@ -1,15 +1,12 @@
 const express = require('express');
-const { SocksProxyAgent } = require('axios-socks-proxy-agent');
+const { SocksProxyAgent } = require('socks-proxy-agent');
 const axios = require('axios');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Configure SOCKS proxy agent to use Tor
-const agent = new SocksProxyAgent({
-    hostname: '127.0.0.1',
-    port: 9050
-});
+const agent = new SocksProxyAgent('socks5h://127.0.0.1:9050');
 
 // HTTP Proxy route
 app.use('/', async (req, res) => {
