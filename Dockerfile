@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y tor
 WORKDIR /app
 
 # Copy application files
-COPY package.json package-lock.json ./
+COPY package*.json ./
 RUN npm install
 COPY . .
 
