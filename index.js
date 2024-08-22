@@ -20,7 +20,6 @@ const server = http.createServer((req, res) => {
         res.writeHead(502, { 'Content-Type': 'text/plain' });
         res.end('502 Bad Gateway');
     } else {
-        // Handle HTTP requests
         const target = req.url || '';
         proxy.web(req, res, {
             target: target,
@@ -33,7 +32,11 @@ const server = http.createServer((req, res) => {
     }
 });
 
+// Handle errors globally
+server.on('error', (error) => {
+    console.error('Server error:', error.message);
+});
+
 server.listen(port, () => {
     console.log(`HTTP Proxy server is running on port ${port}`);
 });
-//up
