@@ -16,11 +16,14 @@ const proxy = httpProxy.createProxyServer({
 // Create an HTTP server that uses the proxy server
 const server = http.createServer((req, res) => {
     if (req.method === 'CONNECT') {
+        // Handle CONNECT method used for HTTPS tunneling
         res.writeHead(502, { 'Content-Type': 'text/plain' });
         res.end('502 Bad Gateway');
     } else {
+        // Handle HTTP requests
+        const target = req.url || '';
         proxy.web(req, res, {
-            target: req.url,
+            target: target,
             changeOrigin: true,
         }, (error) => {
             console.error('Proxy error:', error.message);
@@ -33,4 +36,3 @@ const server = http.createServer((req, res) => {
 server.listen(port, () => {
     console.log(`HTTP Proxy server is running on port ${port}`);
 });
-//updated
