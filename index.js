@@ -15,16 +15,22 @@ const proxy = httpProxy.createProxyServer({
 
 // Create an HTTP server that uses the proxy server
 const server = http.createServer((req, res) => {
-    proxy.web(req, res, {
-        target: req.url, // Forward the request URL
-        changeOrigin: true, // Ensure correct handling of the origin header
-    }, (error) => {
-        console.error('Proxy error:', error.message);
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
-        res.end('Error: ' + error.message);
-    });
+    if (req.method === 'CONNECT') {
+        res.writeHead(502, { 'Content-Type': 'text/plain' });
+        res.end('502 Bad Gateway');
+    } else {
+        proxy.web(req, res, {
+            target: req.url,
+            changeOrigin: true,
+        }, (error) => {
+            console.error('Proxy error:', error.message);
+            res.writeHead(500, { 'Content-Type': 'text/plain' });
+            res.end('Error: ' + error.message);
+        });
+    }
 });
 
 server.listen(port, () => {
     console.log(`HTTP Proxy server is running on port ${port}`);
 });
+//updated
