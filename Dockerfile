@@ -16,7 +16,7 @@ COPY . .
 COPY torrc /etc/tor/torrc
 
 # Expose ports for HTTP proxy server
-EXPOSE 3000
+EXPOSE 8080
 
 # Start both Tor and the Node.js proxy server
 CMD tor & node index.js
