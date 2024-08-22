@@ -1,14 +1,17 @@
-# Use an official Tor image
-FROM alpine:3.14
+# Use an official Alpine image with Nginx
+FROM nginx:alpine
 
 # Install Tor
 RUN apk update && apk add tor
 
+# Copy Nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
+
 # Copy Tor configuration
 COPY torrc /etc/tor/torrc
 
-# Expose the SOCKS5 port
-EXPOSE 9050
+# Expose the HTTP port for Nginx and SOCKS5 port for Tor
+EXPOSE 10000 9050
 
-# Run Tor when the container starts
-CMD ["tor", "-f", "/etc/tor/torrc"]
+# Run Nginx and Tor
+CMD ["sh", "-c", "tor -f /etc/tor/torrc & nginx -g 'daemon off;'"]
