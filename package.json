@@ -6,7 +6,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "http-proxy": "^1.19.1",
+    "http-proxy": "*",
     "socks-proxy-agent": "^7.0.0"
   }
 }
