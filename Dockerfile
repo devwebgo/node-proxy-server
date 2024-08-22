@@ -1,22 +1,14 @@
-# Base image with Node.js
-FROM node:18
+# Use an official Tor image
+FROM alpine:3.14
 
 # Install Tor
-RUN apt-get update && apt-get install -y tor
+RUN apk update && apk add tor
 
-# Set up the working directory
-WORKDIR /app
-
-# Copy application files
-COPY package*.json ./
-RUN npm install
-COPY . .
-
-# Copy the Tor configuration file
+# Copy Tor configuration
 COPY torrc /etc/tor/torrc
 
-# Expose ports for HTTP proxy server
-EXPOSE 8080
+# Expose the SOCKS5 port
+EXPOSE 9050
 
-# Start both Tor and the Node.js proxy server
-CMD tor & node index.js
+# Run Tor when the container starts
+CMD ["tor", "-f", "/etc/tor/torrc"]
